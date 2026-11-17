@@ -1,0 +1,1595 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>CyberVault 11 — Catatan Tabungan Bersama | By Pelopz Project</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Orbitron:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #050811;
+      --bg-panel: rgba(11, 17, 33, 0.88);
+      --bg-card: rgba(15, 23, 44, 0.92);
+      --cyan: #00f0ff;
+      --cyan-dim: rgba(0, 240, 255, 0.16);
+      --magenta: #ff007f;
+      --magenta-dim: rgba(255, 0, 127, 0.16);
+      --green: #00ff9d;
+      --green-dim: rgba(0, 255, 157, 0.16);
+      --yellow: #fcee0a;
+      --yellow-dim: rgba(252, 238, 10, 0.16);
+      --red: #ff3355;
+      --text-main: #e6f1ff;
+      --text-muted: #8899b8;
+      --border-cyan: rgba(0, 240, 255, 0.35);
+      --border-magenta: rgba(255, 0, 127, 0.35);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: var(--bg-dark);
+      background-image:
+        radial-gradient(circle at 15% 15%, rgba(0, 240, 255, 0.08), transparent 35%),
+        radial-gradient(circle at 85% 80%, rgba(255, 0, 127, 0.08), transparent 35%),
+        linear-gradient(rgba(0, 240, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 240, 255, 0.03) 1px, transparent 1px);
+      background-size: 100% 100%, 100% 100%, 28px 28px, 28px 28px;
+      color: var(--text-main);
+      min-height: 100vh;
+      padding-bottom: 58px;
+      overflow-x: hidden;
+    }
+
+    .font-orbitron { font-family: 'Orbitron', sans-serif; }
+    .font-rajdhani { font-family: 'Rajdhani', sans-serif; }
+    .font-mono { font-family: 'JetBrains Mono', monospace; }
+
+    /* Cyberpunk Panel & Buttons */
+    .cyber-panel {
+      background: var(--bg-panel);
+      border: 1px solid var(--border-cyan);
+      box-shadow: 0 0 22px rgba(0, 240, 255, 0.08), inset 0 0 18px rgba(0, 240, 255, 0.03);
+      backdrop-filter: blur(10px);
+      position: relative;
+      border-radius: 10px;
+    }
+
+    .cyber-panel-magenta {
+      border-color: var(--border-magenta);
+      box-shadow: 0 0 22px rgba(255, 0, 127, 0.1), inset 0 0 18px rgba(255, 0, 127, 0.03);
+    }
+
+    .glow-cyan { text-shadow: 0 0 12px rgba(0, 240, 255, 0.65); }
+    .glow-magenta { text-shadow: 0 0 12px rgba(255, 0, 127, 0.65); }
+    .glow-green { text-shadow: 0 0 12px rgba(0, 255, 157, 0.6); }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      padding: 10px 16px;
+      border-radius: 7px;
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 700;
+      font-size: 15px;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: 1px solid transparent;
+      text-decoration: none;
+    }
+    .btn:active { transform: scale(0.97); }
+    .btn:disabled { opacity: 0.4; cursor: not-allowed; pointer-events: none; }
+
+    .btn-cyan {
+      background: linear-gradient(135deg, rgba(0, 240, 255, 0.22), rgba(0, 140, 255, 0.22));
+      border-color: var(--cyan);
+      color: var(--cyan);
+      box-shadow: 0 0 14px rgba(0, 240, 255, 0.22);
+    }
+    .btn-cyan:hover {
+      background: var(--cyan);
+      color: #040812;
+      box-shadow: 0 0 22px rgba(0, 240, 255, 0.6);
+    }
+
+    .btn-magenta {
+      background: linear-gradient(135deg, rgba(255, 0, 127, 0.22), rgba(170, 0, 255, 0.22));
+      border-color: var(--magenta);
+      color: #ff5ca8;
+      box-shadow: 0 0 14px rgba(255, 0, 127, 0.22);
+    }
+    .btn-magenta:hover {
+      background: var(--magenta);
+      color: #fff;
+      box-shadow: 0 0 22px rgba(255, 0, 127, 0.6);
+    }
+
+    .btn-green {
+      background: rgba(0, 255, 157, 0.16);
+      border-color: var(--green);
+      color: var(--green);
+      box-shadow: 0 0 12px rgba(0, 255, 157, 0.2);
+    }
+    .btn-green:hover {
+      background: var(--green);
+      color: #040812;
+    }
+
+    .btn-red {
+      background: rgba(255, 51, 85, 0.16);
+      border-color: var(--red);
+      color: #ff6b84;
+    }
+    .btn-red:hover {
+      background: var(--red);
+      color: #fff;
+    }
+
+    .btn-ghost {
+      background: rgba(255, 255, 255, 0.04);
+      border-color: rgba(136, 153, 184, 0.3);
+      color: var(--text-main);
+    }
+    .btn-ghost:hover {
+      border-color: var(--cyan);
+      color: var(--cyan);
+    }
+
+    .btn-sm { padding: 6px 11px; font-size: 13px; }
+
+    /* Form Controls */
+    .cyber-input, .cyber-select {
+      width: 100%;
+      background: rgba(5, 10, 22, 0.9);
+      border: 1px solid rgba(0, 240, 255, 0.32);
+      color: var(--text-main);
+      padding: 11px 13px;
+      border-radius: 7px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .cyber-input:focus, .cyber-select:focus {
+      border-color: var(--cyan);
+      box-shadow: 0 0 12px rgba(0, 240, 255, 0.28);
+    }
+    .cyber-input:disabled, .cyber-select:disabled {
+      opacity: 0.78;
+      background: rgba(0, 240, 255, 0.06);
+      border-color: rgba(0, 240, 255, 0.2);
+      color: var(--cyan);
+      cursor: not-allowed;
+    }
+
+    label.field-label {
+      display: block;
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      color: var(--cyan);
+      margin-bottom: 6px;
+    }
+
+    /* Badges */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 9px;
+      border-radius: 4px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+    .badge-cyan { background: var(--cyan-dim); color: var(--cyan); border: 1px solid rgba(0, 240, 255, 0.4); }
+    .badge-magenta { background: var(--magenta-dim); color: #ff66b2; border: 1px solid rgba(255, 0, 127, 0.4); }
+    .badge-green { background: var(--green-dim); color: var(--green); border: 1px solid rgba(0, 255, 157, 0.4); }
+    .badge-yellow { background: var(--yellow-dim); color: var(--yellow); border: 1px solid rgba(252, 238, 10, 0.4); }
+    .badge-red { background: rgba(255, 51, 85, 0.16); color: #ff6b84; border: 1px solid rgba(255, 51, 85, 0.4); }
+
+    /* Layout Helpers */
+    .container { max-width: 1200px; margin: 0 auto; padding: 16px; }
+    .hidden { display: none !important; }
+
+    /* Login Screen */
+    .login-wrapper {
+      min-height: calc(100vh - 58px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px 16px;
+    }
+    .login-box {
+      width: 100%;
+      max-width: 440px;
+      padding: 28px 24px;
+    }
+
+    /* Header */
+    .topbar {
+      background: rgba(6, 10, 22, 0.94);
+      border-bottom: 1px solid var(--border-cyan);
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      backdrop-filter: blur(12px);
+    }
+    .topbar-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 12px 16px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    /* Grids */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+    .stat-card { padding: 16px; }
+
+    .members-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(265px, 1fr));
+      gap: 14px;
+    }
+    .member-card {
+      padding: 15px;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .member-card:hover { transform: translateY(-2px); border-color: var(--cyan); }
+    .member-card.is-me {
+      border: 1.5px solid var(--cyan);
+      box-shadow: 0 0 20px rgba(0, 240, 255, 0.2);
+    }
+
+    .main-split {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 16px;
+      margin-top: 18px;
+    }
+    @media (max-width: 860px) {
+      .main-split { grid-template-columns: 1fr; }
+    }
+
+    /* Progress Bar */
+    .progress-track {
+      width: 100%;
+      height: 10px;
+      background: rgba(255, 255, 255, 0.07);
+      border-radius: 99px;
+      overflow: hidden;
+      border: 1px solid rgba(0, 240, 255, 0.25);
+    }
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--cyan), var(--magenta));
+      box-shadow: 0 0 12px var(--cyan);
+      transition: width 0.4s ease;
+    }
+
+    /* Quick Nominal Chips */
+    .chip-row { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 8px; }
+    .chip-btn {
+      background: rgba(0, 240, 255, 0.08);
+      border: 1px solid rgba(0, 240, 255, 0.3);
+      color: var(--cyan);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      padding: 5px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .chip-btn:hover { background: var(--cyan); color: #050811; }
+
+    /* Bar Chart */
+    .chart-row { margin-bottom: 10px; }
+    .chart-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      margin-bottom: 4px;
+    }
+    .chart-bar-bg {
+      height: 8px;
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .chart-bar-val {
+      height: 100%;
+      background: linear-gradient(90deg, var(--cyan), var(--green));
+      border-radius: 4px;
+      transition: width 0.4s ease;
+    }
+
+    /* Table */
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th, td {
+      padding: 10px 12px;
+      text-align: left;
+      border-bottom: 1px solid rgba(0, 240, 255, 0.14);
+      white-space: nowrap;
+    }
+    th {
+      font-family: 'Rajdhani', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.7px;
+      color: var(--cyan);
+      background: rgba(0, 240, 255, 0.05);
+    }
+
+    /* Modal */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(2, 5, 14, 0.85);
+      backdrop-filter: blur(6px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      z-index: 60;
+    }
+    .modal-box {
+      width: 100%;
+      max-width: 540px;
+      max-height: 88vh;
+      overflow-y: auto;
+      padding: 22px;
+    }
+
+    /* Watermark Footer */
+    .watermark-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 40px;
+      background: rgba(4, 7, 17, 0.96);
+      border-top: 1px solid var(--border-magenta);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--text-muted);
+      z-index: 50;
+      padding: 0 12px;
+      text-align: center;
+    }
+    .watermark-bar span.author {
+      color: var(--cyan);
+      font-weight: 700;
+      text-shadow: 0 0 8px rgba(0, 240, 255, 0.5);
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      top: 18px;
+      right: 18px;
+      background: #0b1328;
+      border: 1px solid var(--cyan);
+      color: var(--text-main);
+      padding: 12px 16px;
+      border-radius: 8px;
+      box-shadow: 0 0 24px rgba(0, 240, 255, 0.35);
+      z-index: 100;
+      font-size: 13px;
+      max-width: 320px;
+      animation: slideIn 0.25s ease;
+    }
+    @keyframes slideIn {
+      from { transform: translateX(30px); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==================== LOGIN SCREEN ==================== -->
+  <section id="loginScreen" class="login-wrapper">
+    <div class="cyber-panel login-box">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:6px;">
+        <span class="badge badge-cyan">SYSTEM v2.6 // ONLINE VAULT</span>
+        <span class="badge badge-magenta">BY PELOPZ PROJECT</span>
+      </div>
+      <h1 class="font-orbitron glow-cyan" style="font-size:22px; line-height:1.3; margin-bottom:6px;">
+        CYBERVAULT <span style="color:var(--magenta);">11</span>
+      </h1>
+      <p style="font-size:13px; color:var(--text-muted); margin-bottom:18px;">
+        Sistem Pencatatan Tabungan Bersama 11 Anggota. Masukkan kode akses pribadi Anda atau kode Admin utama.
+      </p>
+
+      <form id="loginForm">
+        <label class="field-label" for="accessCodeInput">Kode Akses Rahasia</label>
+        <input type="password" id="accessCodeInput" class="cyber-input font-mono" placeholder="Contoh: ANGGOTA01 atau ADMIN11" required autocomplete="off" style="margin-bottom:12px; letter-spacing:1.5px;" />
+        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; font-size:12px; color:var(--text-muted);">
+          <label style="display:flex; align-items:center; gap:6px; cursor:pointer;">
+            <input type="checkbox" id="togglePassVis" /> Tampilkan kode
+          </label>
+          <span id="loginSyncIndicator" class="font-mono" style="font-size:11px; color:var(--cyan);">● READY</span>
+        </div>
+        <button type="submit" class="btn btn-cyan" style="width:100%;">
+          MASUK KE BRANKAS TABUNGAN &rarr;
+        </button>
+      </form>
+
+      <div id="defaultHintBox" style="margin-top:18px; padding:12px; border-radius:7px; background:rgba(0,240,255,0.05); border:1px dashed rgba(0,240,255,0.3); font-size:12px; color:var(--text-muted);">
+        <div style="color:var(--cyan); font-weight:700; margin-bottom:4px;">Info Kode Default (Bisa Diubah Admin):</div>
+        <div>• Admin Utama: <code style="color:var(--magenta);">ADMIN11</code></div>
+        <div>• Anggota 1–11: <code style="color:var(--green);">ANGGOTA01</code> s.d. <code style="color:var(--green);">ANGGOTA11</code></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== DASHBOARD SCREEN ==================== -->
+  <section id="dashboardScreen" class="hidden">
+    <!-- Topbar -->
+    <header class="topbar">
+      <div class="topbar-inner">
+        <div>
+          <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+            <span class="font-orbitron glow-cyan" style="font-size:17px; font-weight:800;">CYBERVAULT <span style="color:var(--magenta);">11</span></span>
+            <span class="badge badge-magenta">BY PELOPZ PROJECT</span>
+            <span id="cloudStatusBadge" class="badge badge-yellow">MODE LOKAL</span>
+          </div>
+          <div id="currentUserLabel" style="font-size:12px; color:var(--text-muted); margin-top:3px;"></div>
+        </div>
+
+        <div style="display:flex; flex-wrap:wrap; gap:8px; align-items:center;">
+          <button type="button" class="btn btn-magenta btn-sm" onclick="openQrisModal()">
+            QRIS &amp; Lapor WA
+          </button>
+          <button type="button" id="adminSettingsBtn" class="btn btn-cyan btn-sm hidden" onclick="openAdminModal()">
+            Pengaturan Admin
+          </button>
+          <button type="button" class="btn btn-ghost btn-sm" onclick="exportCsv()">
+            Ekspor CSV
+          </button>
+          <button type="button" class="btn btn-red btn-sm" onclick="logout()">
+            Keluar
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main class="container">
+      <!-- ADMIN VERIFICATION QUEUE (ONLY VISIBLE FOR ADMIN) -->
+      <div id="adminVerifyPanel" class="cyber-panel cyber-panel-magenta hidden" style="padding:18px; margin-bottom:18px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:12px;">
+          <div>
+            <h2 class="font-orbitron glow-magenta" style="font-size:15px; color:#ff66b2;">
+              ANTREAN VERIFIKASI SETORAN (ADMIN)
+            </h2>
+            <p style="font-size:12px; color:var(--text-muted);">Periksa screenshot bukti transfer atau chat WhatsApp anggota sebelum menyetujui saldo.</p>
+          </div>
+          <span id="pendingCountBadge" class="badge badge-yellow">0 MENUNGGU</span>
+        </div>
+        <div id="pendingListContainer" style="display:grid; gap:10px;"></div>
+      </div>
+
+      <!-- GROUP PROGRESS BANNER -->
+      <div class="cyber-panel" style="padding:18px; margin-bottom:18px;">
+        <div style="display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:12px; margin-bottom:10px;">
+          <div>
+            <span class="badge badge-cyan" style="margin-bottom:6px;">TARGET TABUNGAN KELOMPOK (SETORAN MURNI)</span>
+            <div class="font-orbitron glow-cyan" style="font-size:26px; font-weight:800;" id="totalApprovedDisplay">Rp 0</div>
+            <div style="font-size:13px; color:var(--text-muted);">
+              Dari target <strong id="targetTotalDisplay" style="color:var(--text-main);">Rp 11.000.000</strong>
+              (<span id="targetPerPersonDisplay">Rp 1.000.000</span> / anggota)
+            </div>
+          </div>
+          <div style="display:flex; gap:8px; flex-wrap:wrap;">
+            <button type="button" class="btn btn-magenta" onclick="openQrisModal()">
+              Bayar via QRIS &amp; Lapor WA
+            </button>
+          </div>
+        </div>
+        <div class="progress-track">
+          <div id="groupProgressBar" class="progress-fill" style="width:0%;"></div>
+        </div>
+        <div style="display:flex; justify-content:space-between; font-size:12px; color:var(--text-muted); margin-top:6px;">
+          <span id="progressPercentText">0% Tercapai</span>
+          <span id="remainingTargetText">Kurang Rp 11.000.000</span>
+        </div>
+      </div>
+
+      <!-- 4 SUMMARY CARDS -->
+      <div class="stats-grid">
+        <div class="cyber-panel stat-card">
+          <div style="font-size:12px; color:var(--text-muted);">SALDO TERVERIFIKASI</div>
+          <div class="font-orbitron glow-green" style="font-size:20px; color:var(--green); margin-top:4px;" id="statVerified">Rp 0</div>
+        </div>
+        <div class="cyber-panel stat-card">
+          <div style="font-size:12px; color:var(--text-muted);">MENUNGGU VERIFIKASI ADMIN</div>
+          <div class="font-orbitron" style="font-size:20px; color:var(--yellow); margin-top:4px;" id="statPending">Rp 0</div>
+        </div>
+        <div class="cyber-panel stat-card">
+          <div style="font-size:12px; color:var(--text-muted);">RATA-RATA PER ANGGOTA</div>
+          <div class="font-orbitron" style="font-size:20px; color:var(--cyan); margin-top:4px;" id="statAverage">Rp 0</div>
+        </div>
+        <div class="cyber-panel stat-card">
+          <div style="font-size:12px; color:var(--text-muted);">TOTAL TRANSAKSI DISETUJUI</div>
+          <div class="font-orbitron" style="font-size:20px; color:#ff66b2; margin-top:4px;" id="statTxCount">0 Setoran</div>
+        </div>
+      </div>
+
+      <!-- 11 MEMBERS GRID -->
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:12px;">
+        <h2 class="font-orbitron glow-cyan" style="font-size:16px;">STATUS 11 ANGGOTA</h2>
+        <span style="font-size:12px; color:var(--text-muted);">Skema 1: Setiap anggota hanya dapat menyetor ke akun pribadinya</span>
+      </div>
+      <div id="membersGrid" class="members-grid"></div>
+
+      <!-- DEPOSIT FORM + CHART -->
+      <div class="main-split">
+        <!-- DEPOSIT FORM -->
+        <div class="cyber-panel" style="padding:18px;" id="depositFormCard">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+            <h3 class="font-orbitron glow-cyan" style="font-size:15px;">CATAT SETORAN BARU</h3>
+            <button type="button" class="btn btn-magenta btn-sm" onclick="openQrisModal()">Buka QRIS</button>
+          </div>
+
+          <form id="depositForm">
+            <div style="margin-bottom:12px;">
+              <label class="field-label" for="depositMemberSelect">Nama Penyetor (Terkunci ke Akun)</label>
+              <select id="depositMemberSelect" class="cyber-select" required></select>
+            </div>
+
+            <div style="margin-bottom:12px;">
+              <label class="field-label" for="depositAmountInput">Nominal Setoran (Rp)</label>
+              <input type="number" id="depositAmountInput" class="cyber-input font-mono" min="1000" step="500" placeholder="Contoh: 50000" required />
+              <div class="chip-row">
+                <button type="button" class="chip-btn" onclick="setDepositNominal(10000)">+10rb</button>
+                <button type="button" class="chip-btn" onclick="setDepositNominal(20000)">+20rb</button>
+                <button type="button" class="chip-btn" onclick="setDepositNominal(50000)">+50rb</button>
+                <button type="button" class="chip-btn" onclick="setDepositNominal(100000)">+100rb</button>
+              </div>
+            </div>
+
+            <div style="margin-bottom:12px;">
+              <label class="field-label" for="depositDateInput">Tanggal Setoran</label>
+              <input type="date" id="depositDateInput" class="cyber-input font-mono" required />
+            </div>
+
+            <div style="margin-bottom:12px;">
+              <label class="field-label" for="depositProofInput">Screenshot Bukti Pembayaran (Wajib dari Galeri)</label>
+              <input type="file" id="depositProofInput" class="cyber-input" accept="image/*" required />
+              <div id="depositProofPreviewWrap" class="hidden" style="margin-top:8px;">
+                <img id="depositProofPreview" alt="Pratinjau Bukti" style="max-height:140px; border-radius:6px; border:1px solid var(--cyan);" />
+              </div>
+            </div>
+
+            <div style="margin-bottom:14px;">
+              <label class="field-label" for="depositNoteInput">Catatan (Opsional)</label>
+              <input type="text" id="depositNoteInput" class="cyber-input" placeholder="Misal: Setoran minggu ke-1 via QRIS" />
+            </div>
+
+            <button type="submit" class="btn btn-cyan" style="width:100%;">
+              KIRIM SETORAN UNTUK VERIFIKASI ADMIN
+            </button>
+          </form>
+        </div>
+
+        <!-- COMPARISON CHART -->
+        <div class="cyber-panel" style="padding:18px;">
+          <h3 class="font-orbitron glow-cyan" style="font-size:15px; margin-bottom:14px;">GRAFIK SALDO 11 ANGGOTA</h3>
+          <div id="chartContainer"></div>
+        </div>
+      </div>
+
+      <!-- RECENT TRANSACTIONS TABLE -->
+      <div class="cyber-panel" style="padding:18px; margin-top:18px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:12px;">
+          <h3 class="font-orbitron glow-cyan" style="font-size:15px;">RIWAYAT SELURUH SETORAN</h3>
+          <select id="filterStatusSelect" class="cyber-select" style="width:auto; padding:7px 12px;" onchange="renderAll()">
+            <option value="all">Semua Status</option>
+            <option value="approved">Disetujui</option>
+            <option value="pending">Menunggu Verifikasi</option>
+            <option value="rejected">Ditolak</option>
+          </select>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Tanggal</th>
+                <th>Anggota</th>
+                <th>Nominal</th>
+                <th>Status</th>
+                <th>Bukti</th>
+                <th>Catatan</th>
+              </tr>
+            </thead>
+            <tbody id="txTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </section>
+
+  <!-- ==================== MODAL: QRIS & LAPOR WA ADMIN ==================== -->
+  <div id="qrisModal" class="modal-backdrop hidden">
+    <div class="cyber-panel cyber-panel-magenta modal-box">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+        <h3 class="font-orbitron glow-magenta" style="font-size:16px; color:#ff66b2;">PEMBAYARAN QRIS &amp; LAPOR WA</h3>
+        <button type="button" class="btn btn-ghost btn-sm" onclick="closeModal('qrisModal')">Tutup</button>
+      </div>
+
+      <div style="text-align:center; background:rgba(255,255,255,0.04); padding:14px; border-radius:8px; border:1px solid rgba(255,0,127,0.3); margin-bottom:14px;">
+        <img id="qrisDisplayImg" alt="QRIS Pembayaran" style="max-width:220px; width:100%; border-radius:8px; background:#fff; padding:6px; margin:0 auto 10px; display:block;" />
+        <button type="button" class="btn btn-cyan btn-sm" onclick="downloadQrisImage()">
+          Unduh Gambar QRIS ke Galeri
+        </button>
+      </div>
+
+      <form id="qrisReportForm">
+        <div style="margin-bottom:10px;">
+          <label class="field-label">Nama Anggota (Terkunci)</label>
+          <select id="qrisMemberSelect" class="cyber-select" required></select>
+        </div>
+        <div style="margin-bottom:10px;">
+          <label class="field-label">Nominal Transfer (Rp)</label>
+          <input type="number" id="qrisAmountInput" class="cyber-input font-mono" min="1000" step="500" placeholder="50000" required />
+          <div class="chip-row">
+            <button type="button" class="chip-btn" onclick="document.getElementById('qrisAmountInput').value=10000">10rb</button>
+            <button type="button" class="chip-btn" onclick="document.getElementById('qrisAmountInput').value=20000">20rb</button>
+            <button type="button" class="chip-btn" onclick="document.getElementById('qrisAmountInput').value=50000">50rb</button>
+            <button type="button" class="chip-btn" onclick="document.getElementById('qrisAmountInput').value=100000">100rb</button>
+          </div>
+        </div>
+        <div style="margin-bottom:12px;">
+          <label class="field-label">Unggah Screenshot Bukti Bayar (Wajib)</label>
+          <input type="file" id="qrisProofInput" class="cyber-input" accept="image/*" required />
+        </div>
+
+        <div style="display:grid; gap:8px;">
+          <button type="submit" class="btn btn-green" style="width:100%;">
+            CATAT KE SISTEM &amp; LAPOR WA ADMIN
+          </button>
+          <button type="button" class="btn btn-ghost" style="width:100%;" onclick="openWhatsAppOnly()">
+            Buka Chat WhatsApp Admin Saja
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL: RIWAYAT & BUKTI ANGGOTA ==================== -->
+  <div id="historyModal" class="modal-backdrop hidden">
+    <div class="cyber-panel modal-box">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+        <h3 id="historyModalTitle" class="font-orbitron glow-cyan" style="font-size:15px;">RIWAYAT ANGGOTA</h3>
+        <button type="button" class="btn btn-ghost btn-sm" onclick="closeModal('historyModal')">Tutup</button>
+      </div>
+      <div id="historyModalBody" style="display:grid; gap:10px;"></div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL: PREVIEW SCREENSHOT ==================== -->
+  <div id="imageModal" class="modal-backdrop hidden" onclick="closeModal('imageModal')">
+    <div class="cyber-panel modal-box" style="max-width:460px; text-align:center;" onclick="event.stopPropagation()">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+        <span class="font-orbitron" style="font-size:14px; color:var(--cyan);">BUKTI PEMBAYARAN</span>
+        <button type="button" class="btn btn-ghost btn-sm" onclick="closeModal('imageModal')">Tutup</button>
+      </div>
+      <img id="fullProofImg" alt="Bukti Transfer" style="width:100%; border-radius:8px; border:1px solid var(--cyan);" />
+    </div>
+  </div>
+
+  <!-- ==================== MODAL: PENGATURAN ADMIN ==================== -->
+  <div id="adminModal" class="modal-backdrop hidden">
+    <div class="cyber-panel modal-box" style="max-width:640px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+        <h3 class="font-orbitron glow-cyan" style="font-size:16px;">PANEL PENGATURAN ADMIN</h3>
+        <button type="button" class="btn btn-ghost btn-sm" onclick="closeModal('adminModal')">Tutup</button>
+      </div>
+
+      <form id="adminSettingsForm">
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:12px;">
+          <div>
+            <label class="field-label">Kode Login Admin Utama</label>
+            <input type="text" id="setAdminCode" class="cyber-input font-mono" required />
+          </div>
+          <div>
+            <label class="field-label">Nomor WhatsApp Admin</label>
+            <input type="text" id="setAdminWa" class="cyber-input font-mono" placeholder="081234567890" />
+          </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:12px;">
+          <div>
+            <label class="field-label">Target Tabungan Kelompok (Rp)</label>
+            <input type="number" id="setTargetTotal" class="cyber-input font-mono" min="11000" step="10000" required />
+          </div>
+          <div>
+            <label class="field-label">Upload Gambar QRIS Kelompok</label>
+            <input type="file" id="setQrisFile" class="cyber-input" accept="image/*" />
+          </div>
+        </div>
+
+        <div style="margin-bottom:12px;">
+          <label class="field-label">Firebase Realtime Database URL (Opsional Sinkronisasi Cloud)</label>
+          <input type="url" id="setFirebaseUrl" class="cyber-input font-mono" placeholder="https://nama-project-default-rtdb.asia-southeast1.firebasedatabase.app" />
+        </div>
+
+        <div style="margin-bottom:14px; font-size:13px;">
+          <label style="display:flex; align-items:center; gap:8px; cursor:pointer;">
+            <input type="checkbox" id="setShowHint" /> Tampilkan kotak info kode default di layar Login
+          </label>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+          <label class="field-label" style="margin:0;">Daftar 11 Anggota &amp; Kode Pribadi Unik</label>
+          <button type="button" class="btn btn-green btn-sm" onclick="copyLoginInfoForWa()">Salin Info Login ke WA</button>
+        </div>
+        <div id="adminMembersEditor" style="display:grid; gap:8px; margin-bottom:16px;"></div>
+
+        <button type="submit" class="btn btn-cyan" style="width:100%; margin-bottom:12px;">
+          SIMPAN SEMUA PENGATURAN ADMIN
+        </button>
+      </form>
+
+      <div style="border-top:1px solid rgba(0,240,255,0.2); padding-top:12px; display:flex; flex-wrap:wrap; gap:8px; justify-content:space-between;">
+        <button type="button" class="btn btn-ghost btn-sm" onclick="backupJson()">Backup JSON</button>
+        <label class="btn btn-ghost btn-sm" style="cursor:pointer;">
+          Restore JSON <input type="file" accept=".json" class="hidden" onchange="restoreJson(event)" />
+        </label>
+        <button type="button" class="btn btn-red btn-sm" onclick="resetAllData()">Reset Semua Data</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- WATERMARK BAR -->
+  <footer class="watermark-bar">
+    <span>SYSTEM AUTHOR //</span>
+    <span class="author">By Pelopz Project</span>
+    <span>&bull; CyberVault 11</span>
+  </footer>
+
+  <script>
+    // =========================================================================
+    // KONFIGURASI SINKRONISASI ONLINE (FIREBASE REALTIME DATABASE)
+    // Tempel URL Firebase Realtime Database Anda di dalam tanda kutip di bawah
+    // agar seluruh HP anggota langsung tersinkronisasi secara otomatis:
+    // Contoh: "https://tabungan-pelopz-default-rtdb.asia-southeast1.firebasedatabase.app"
+    // =========================================================================
+    const HARDCODED_FIREBASE_URL = "";
+
+    const STORAGE_KEY = "cybervault11_pelopz_v1";
+    const SESSION_KEY = "cybervault11_session_v1";
+
+    // Default QRIS SVG placeholder
+    const DEFAULT_QRIS_SVG = "data:image/svg+xml;utf8," + encodeURIComponent(`
+      <svg xmlns="http://www.w3.org/2000/svg" width="260" height="260" viewBox="0 0 260 260">
+        <rect width="260" height="260" fill="#ffffff"/>
+        <rect x="14" y="14" width="232" height="232" fill="none" stroke="#050811" stroke-width="4"/>
+        <rect x="28" y="28" width="54" height="54" fill="none" stroke="#050811" stroke-width="8"/>
+        <rect x="42" y="42" width="26" height="26" fill="#050811"/>
+        <rect x="178" y="28" width="54" height="54" fill="none" stroke="#050811" stroke-width="8"/>
+        <rect x="192" y="42" width="26" height="26" fill="#050811"/>
+        <rect x="28" y="178" width="54" height="54" fill="none" stroke="#050811" stroke-width="8"/>
+        <rect x="42" y="192" width="26" height="26" fill="#050811"/>
+        <text x="130" y="128" font-family="monospace" font-size="14" font-weight="bold" text-anchor="middle" fill="#050811">QRIS KELOMPOK</text>
+        <text x="130" y="148" font-family="monospace" font-size="10" text-anchor="middle" fill="#444">Admin dapat mengunggah</text>
+        <text x="130" y="162" font-family="monospace" font-size="10" text-anchor="middle" fill="#444">gambar QRIS asli di Pengaturan</text>
+      </svg>
+    `);
+
+    function createDefaultState() {
+      const members = [];
+      for (let i = 1; i <= 11; i++) {
+        const num = String(i).padStart(2, "0");
+        members.push({
+          id: i,
+          name: `Anggota ${i}`,
+          code: `ANGGOTA${num}`
+        });
+      }
+      return {
+        updatedAt: Date.now(),
+        settings: {
+          adminCode: "ADMIN11",
+          adminWa: "",
+          targetTotal: 11000000,
+          qrisImage: DEFAULT_QRIS_SVG,
+          showHint: true,
+          firebaseUrl: ""
+        },
+        members,
+        transactions: []
+      };
+    }
+
+    let appState = loadLocalState();
+    let currentSession = loadSession(); // { role: 'admin' } or { role: 'member', memberId: 1..11 }
+    let syncTimer = null;
+
+    function loadLocalState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return createDefaultState();
+        const parsed = JSON.parse(raw);
+        if (!parsed.members || parsed.members.length !== 11) return createDefaultState();
+        return parsed;
+      } catch (e) {
+        return createDefaultState();
+      }
+    }
+
+    function loadSession() {
+      try {
+        const raw = sessionStorage.getItem(SESSION_KEY);
+        return raw ? JSON.parse(raw) : null;
+      } catch (e) {
+        return null;
+      }
+    }
+
+    function getActiveFirebaseUrl() {
+      const url = (HARDCODED_FIREBASE_URL || appState.settings.firebaseUrl || "").trim().replace(/\/+$/, "");
+      return url;
+    }
+
+    async function pullFromCloud(silent = true) {
+      const dbUrl = getActiveFirebaseUrl();
+      updateCloudBadge(Boolean(dbUrl), "syncing");
+      if (!dbUrl) return;
+      try {
+        const res = await fetch(`${dbUrl}/cybervault11.json?t=${Date.now()}`);
+        if (!res.ok) throw new Error("HTTP " + res.status);
+        const cloudData = await res.json();
+        if (cloudData && cloudData.members && Array.isArray(cloudData.members) && cloudData.members.length === 11) {
+          cloudData.transactions = Array.isArray(cloudData.transactions) ? cloudData.transactions : [];
+          appState = cloudData;
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+          refreshUI();
+        }
+        updateCloudBadge(true, "online");
+      } catch (err) {
+        updateCloudBadge(true, "error");
+        if (!silent) showToast("Gagal terhubung ke Firebase. Periksa URL / koneksi internet.");
+      }
+    }
+
+    async function saveState(mergeTransactions = false) {
+      appState.updatedAt = Date.now();
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+      refreshUI();
+
+      const dbUrl = getActiveFirebaseUrl();
+      if (!dbUrl) {
+        updateCloudBadge(false);
+        return;
+      }
+
+      updateCloudBadge(true, "syncing");
+      try {
+        if (mergeTransactions) {
+          const res = await fetch(`${dbUrl}/cybervault11.json?t=${Date.now()}`);
+          if (res.ok) {
+            const latest = await res.json();
+            if (latest && Array.isArray(latest.transactions)) {
+              const map = new Map();
+              latest.transactions.forEach(tx => map.set(tx.id, tx));
+              appState.transactions.forEach(tx => map.set(tx.id, tx));
+              appState.transactions = Array.from(map.values()).sort((a, b) => b.createdAt - a.createdAt);
+              if (latest.settings) appState.settings = latest.settings;
+              if (latest.members) appState.members = latest.members;
+              localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+              refreshUI();
+            }
+          }
+        }
+
+        const putRes = await fetch(`${dbUrl}/cybervault11.json`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(appState)
+        });
+        if (!putRes.ok) throw new Error("PUT failed");
+        updateCloudBadge(true, "online");
+      } catch (err) {
+        updateCloudBadge(true, "error");
+        showToast("Tersimpan lokal, namun gagal sinkron ke Cloud.");
+      }
+    }
+
+    function updateCloudBadge(configured, status = "online") {
+      const badge = document.getElementById("cloudStatusBadge");
+      const loginInd = document.getElementById("loginSyncIndicator");
+      if (!configured) {
+        if (badge) { badge.className = "badge badge-yellow"; badge.textContent = "MODE LOKAL"; }
+        if (loginInd) { loginInd.style.color = "var(--yellow)"; loginInd.textContent = "● MODE LOKAL"; }
+        return;
+      }
+      if (status === "online") {
+        if (badge) { badge.className = "badge badge-green"; badge.textContent = "CLOUD SYNC: ONLINE"; }
+        if (loginInd) { loginInd.style.color = "var(--green)"; loginInd.textContent = "● CLOUD ONLINE"; }
+      } else if (status === "syncing") {
+        if (badge) { badge.className = "badge badge-cyan"; badge.textContent = "MENYINKRONKAN..."; }
+      } else {
+        if (badge) { badge.className = "badge badge-red"; badge.textContent = "CLOUD OFFLINE"; }
+        if (loginInd) { loginInd.style.color = "var(--red)"; loginInd.textContent = "● CLOUD ERROR"; }
+      }
+    }
+
+    // ==================== AUTHENTICATION ====================
+    document.getElementById("togglePassVis").addEventListener("change", (e) => {
+      document.getElementById("accessCodeInput").type = e.target.checked ? "text" : "password";
+    });
+
+    document.getElementById("loginForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const inputCode = document.getElementById("accessCodeInput").value.trim();
+      if (!inputCode) return;
+
+      await pullFromCloud(true);
+
+      if (inputCode === appState.settings.adminCode) {
+        currentSession = { role: "admin" };
+        sessionStorage.setItem(SESSION_KEY, JSON.stringify(currentSession));
+        document.getElementById("accessCodeInput").value = "";
+        enterDashboard();
+        showToast("Berhasil masuk sebagai Admin Utama.");
+        return;
+      }
+
+      const matchedMember = appState.members.find(m => m.code.toLowerCase() === inputCode.toLowerCase());
+      if (matchedMember) {
+        currentSession = { role: "member", memberId: matchedMember.id };
+        sessionStorage.setItem(SESSION_KEY, JSON.stringify(currentSession));
+        document.getElementById("accessCodeInput").value = "";
+        enterDashboard();
+        showToast(`Selamat datang, ${matchedMember.name}!`);
+        return;
+      }
+
+      showToast("Kode akses salah! Periksa kembali kode pribadi Anda.");
+    });
+
+    function logout() {
+      currentSession = null;
+      sessionStorage.removeItem(SESSION_KEY);
+      if (syncTimer) clearInterval(syncTimer);
+      document.getElementById("dashboardScreen").classList.add("hidden");
+      document.getElementById("loginScreen").classList.remove("hidden");
+      refreshLoginScreen();
+    }
+
+    function refreshLoginScreen() {
+      const hintBox = document.getElementById("defaultHintBox");
+      if (appState.settings.showHint) hintBox.classList.remove("hidden");
+      else hintBox.classList.add("hidden");
+      updateCloudBadge(Boolean(getActiveFirebaseUrl()));
+    }
+
+    function enterDashboard() {
+      document.getElementById("loginScreen").classList.add("hidden");
+      document.getElementById("dashboardScreen").classList.remove("hidden");
+      document.getElementById("depositDateInput").value = new Date().toISOString().split("T")[0];
+
+      refreshUI();
+      if (syncTimer) clearInterval(syncTimer);
+      syncTimer = setInterval(() => {
+        if (!document.hidden && getActiveFirebaseUrl()) pullFromCloud(true);
+      }, 4500);
+    }
+
+    // ==================== IMAGE COMPRESSION ====================
+    function compressImageFile(file, maxWidth = 720, quality = 0.65) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+          const img = new Image();
+          img.onload = () => {
+            const canvas = document.createElement("canvas");
+            let w = img.width;
+            let h = img.height;
+            if (w > maxWidth) {
+              h = Math.round((h * maxWidth) / w);
+              w = maxWidth;
+            }
+            canvas.width = w;
+            canvas.height = h;
+            const ctx = canvas.getContext("2d");
+            ctx.drawImage(img, 0, 0, w, h);
+            resolve(canvas.toDataURL("image/jpeg", quality));
+          };
+          img.onerror = reject;
+          img.src = ev.target.result;
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    }
+
+    document.getElementById("depositProofInput").addEventListener("change", async (e) => {
+      const file = e.target.files[0];
+      const wrap = document.getElementById("depositProofPreviewWrap");
+      if (!file) { wrap.classList.add("hidden"); return; }
+      const compressed = await compressImageFile(file);
+      document.getElementById("depositProofPreview").src = compressed;
+      wrap.classList.remove("hidden");
+    });
+
+    // ==================== SUBMIT DEPOSIT ====================
+    function setDepositNominal(val) {
+      document.getElementById("depositAmountInput").value = val;
+    }
+
+    document.getElementById("depositForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const memberId = Number(document.getElementById("depositMemberSelect").value);
+      const amount = Number(document.getElementById("depositAmountInput").value);
+      const date = document.getElementById("depositDateInput").value;
+      const note = document.getElementById("depositNoteInput").value.trim();
+      const fileInput = document.getElementById("depositProofInput");
+
+      if (currentSession.role === "member" && memberId !== currentSession.memberId) {
+        showToast("Akses ditolak: Anda hanya bisa menyetor untuk akun sendiri.");
+        return;
+      }
+      if (!fileInput.files || !fileInput.files[0]) {
+        showToast("Wajib melampirkan screenshot bukti pembayaran!");
+        return;
+      }
+      if (amount < 1000) {
+        showToast("Nominal minimal Rp 1.000.");
+        return;
+      }
+
+      const proofBase64 = await compressImageFile(fileInput.files[0]);
+      const newTx = {
+        id: "TX-" + Date.now() + "-" + Math.random().toString(36).slice(2, 6),
+        memberId,
+        amount,
+        date,
+        note: note || "Setoran tabungan",
+        proof: proofBase64,
+        status: "pending",
+        rejectReason: "",
+        createdAt: Date.now()
+      };
+
+      appState.transactions.unshift(newTx);
+      await saveState(true);
+
+      document.getElementById("depositAmountInput").value = "";
+      document.getElementById("depositNoteInput").value = "";
+      fileInput.value = "";
+      document.getElementById("depositProofPreviewWrap").classList.add("hidden");
+      showToast("Setoran terkirim! Menunggu verifikasi Admin.");
+    });
+
+    // ==================== ADMIN VERIFICATION ====================
+    async function approveTx(txId) {
+      const tx = appState.transactions.find(t => t.id === txId);
+      if (!tx) return;
+      tx.status = "approved";
+      tx.rejectReason = "";
+      await saveState(false);
+      showToast("Setoran disetujui & ditambahkan ke saldo!");
+    }
+
+    async function rejectTx(txId) {
+      const tx = appState.transactions.find(t => t.id === txId);
+      if (!tx) return;
+      const reason = prompt("Masukkan alasan penolakan (contoh: Bukti buram / nominal tidak sesuai):", "Bukti transfer tidak valid");
+      if (reason === null) return;
+      tx.status = "rejected";
+      tx.rejectReason = reason.trim() || "Ditolak oleh Admin";
+      await saveState(false);
+      showToast("Setoran ditolak.");
+    }
+
+    // ==================== QRIS & WHATSAPP ADMIN ====================
+    function openQrisModal(preselectMemberId = null) {
+      document.getElementById("qrisDisplayImg").src = appState.settings.qrisImage || DEFAULT_QRIS_SVG;
+      populateMemberSelect(document.getElementById("qrisMemberSelect"), preselectMemberId);
+
+      const mainAmount = document.getElementById("depositAmountInput").value;
+      if (mainAmount) document.getElementById("qrisAmountInput").value = mainAmount;
+
+      document.getElementById("qrisModal").classList.remove("hidden");
+    }
+
+    function downloadQrisImage() {
+      const src = appState.settings.qrisImage || DEFAULT_QRIS_SVG;
+      const a = document.createElement("a");
+      a.href = src;
+      a.download = "QRIS-Tabungan-11-Anggota.png";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      showToast("Gambar QRIS diunduh ke perangkat.");
+    }
+
+    function formatWaNumber(raw) {
+      let digits = (raw || "").replace(/\D/g, "");
+      if (digits.startsWith("0")) digits = "62" + digits.slice(1);
+      return digits;
+    }
+
+    function buildWaUrl(memberName, amount) {
+      const waNum = formatWaNumber(appState.settings.adminWa);
+      const nominalText = amount ? formatRupiah(amount) : "(isi nominal)";
+      const msg =
+        `Halo Admin CyberVault 11,\n\n` +
+        `Saya ingin melaporkan transfer setoran tabungan:\n` +
+        `• Nama: *${memberName}*\n` +
+        `• Nominal: *${nominalText}*\n` +
+        `• Tanggal: ${new Date().toLocaleDateString("id-ID")}\n\n` +
+        `Bukti screenshot pembayaran sudah saya unggah di website (dan saya lampirkan di chat ini). Mohon diverifikasi ya. Terima kasih!`;
+      const encoded = encodeURIComponent(msg);
+      return waNum ? `https://wa.me/${waNum}?text=${encoded}` : `https://wa.me/?text=${encoded}`;
+    }
+
+    function openWhatsAppOnly() {
+      const memberId = Number(document.getElementById("qrisMemberSelect").value);
+      const member = appState.members.find(m => m.id === memberId);
+      const amount = Number(document.getElementById("qrisAmountInput").value) || 0;
+      window.open(buildWaUrl(member ? member.name : "Anggota", amount), "_blank");
+    }
+
+    document.getElementById("qrisReportForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const memberId = Number(document.getElementById("qrisMemberSelect").value);
+      const amount = Number(document.getElementById("qrisAmountInput").value);
+      const fileInput = document.getElementById("qrisProofInput");
+
+      if (currentSession.role === "member" && memberId !== currentSession.memberId) {
+        showToast("Anda hanya bisa melaporkan setoran akun sendiri.");
+        return;
+      }
+      if (!fileInput.files || !fileInput.files[0]) {
+        showToast("Wajib unggah screenshot bukti bayar!");
+        return;
+      }
+
+      const proofBase64 = await compressImageFile(fileInput.files[0]);
+      const member = appState.members.find(m => m.id === memberId);
+
+      appState.transactions.unshift({
+        id: "TX-" + Date.now() + "-" + Math.random().toString(36).slice(2, 6),
+        memberId,
+        amount,
+        date: new Date().toISOString().split("T")[0],
+        note: "Setoran via QRIS + Lapor WA",
+        proof: proofBase64,
+        status: "pending",
+        rejectReason: "",
+        createdAt: Date.now()
+      });
+
+      await saveState(true);
+      fileInput.value = "";
+      document.getElementById("qrisAmountInput").value = "";
+      closeModal("qrisModal");
+      showToast("Setoran tercatat & membuka WhatsApp Admin...");
+      window.open(buildWaUrl(member.name, amount), "_blank");
+    });
+
+    // ==================== MEMBER HISTORY MODAL ====================
+    function openMemberHistory(memberId) {
+      const member = appState.members.find(m => m.id === memberId);
+      if (!member) return;
+      document.getElementById("historyModalTitle").textContent = `RIWAYAT & BUKTI // ${member.name.toUpperCase()}`;
+
+      const txs = appState.transactions.filter(t => t.memberId === memberId);
+      const body = document.getElementById("historyModalBody");
+
+      if (txs.length === 0) {
+        body.innerHTML = `<div style="text-align:center; padding:20px; color:var(--text-muted); font-size:13px;">Belum ada riwayat setoran untuk ${escapeHtml(member.name)}.</div>`;
+      } else {
+        body.innerHTML = txs.map(tx => `
+          <div style="background:rgba(5,10,22,0.85); border:1px solid rgba(0,240,255,0.25); border-radius:8px; padding:12px; display:flex; justify-content:space-between; align-items:center; gap:12px;">
+            <div>
+              <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:4px;">
+                <strong class="font-mono" style="color:var(--cyan); font-size:15px;">${formatRupiah(tx.amount)}</strong>
+                ${renderStatusBadge(tx.status)}
+              </div>
+              <div style="font-size:12px; color:var(--text-muted);">${tx.date} &bull; ${escapeHtml(tx.note)}</div>
+              ${tx.status === "rejected" && tx.rejectReason ? `<div style="font-size:11px; color:#ff6b84; margin-top:4px;">Alasan ditolak: ${escapeHtml(tx.rejectReason)}</div>` : ""}
+            </div>
+            ${tx.proof ? `<img src="${tx.proof}" alt="Bukti" onclick="viewFullProof('${tx.id}')" style="width:56px; height:56px; object-fit:cover; border-radius:6px; border:1px solid var(--cyan); cursor:pointer; flex-shrink:0;" title="Klik untuk memperbesar" />` : ""}
+          </div>
+        `).join("");
+      }
+      document.getElementById("historyModal").classList.remove("hidden");
+    }
+
+    function viewFullProof(txId) {
+      const tx = appState.transactions.find(t => t.id === txId);
+      if (!tx || !tx.proof) return;
+      document.getElementById("fullProofImg").src = tx.proof;
+      document.getElementById("imageModal").classList.remove("hidden");
+    }
+
+    // ==================== ADMIN SETTINGS ====================
+    function openAdminModal() {
+      if (currentSession.role !== "admin") return;
+      document.getElementById("setAdminCode").value = appState.settings.adminCode;
+      document.getElementById("setAdminWa").value = appState.settings.adminWa || "";
+      document.getElementById("setTargetTotal").value = appState.settings.targetTotal;
+      document.getElementById("setFirebaseUrl").value = HARDCODED_FIREBASE_URL || appState.settings.firebaseUrl || "";
+      document.getElementById("setShowHint").checked = Boolean(appState.settings.showHint);
+
+      const editor = document.getElementById("adminMembersEditor");
+      editor.innerHTML = appState.members.map(m => `
+        <div style="display:grid; grid-template-columns:36px 1fr 130px; gap:8px; align-items:center;">
+          <span class="font-mono" style="color:var(--cyan); font-size:12px;">#${String(m.id).padStart(2, "0")}</span>
+          <input type="text" class="cyber-input admin-member-name" data-id="${m.id}" value="${escapeHtml(m.name)}" required style="padding:8px 10px;" />
+          <input type="text" class="cyber-input font-mono admin-member-code" data-id="${m.id}" value="${escapeHtml(m.code)}" required style="padding:8px 10px;" />
+        </div>
+      `).join("");
+
+      document.getElementById("adminModal").classList.remove("hidden");
+    }
+
+    document.getElementById("adminSettingsForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (currentSession.role !== "admin") return;
+
+      const newAdminCode = document.getElementById("setAdminCode").value.trim();
+      const newWa = document.getElementById("setAdminWa").value.trim();
+      const newTarget = Number(document.getElementById("setTargetTotal").value);
+      const newFbUrl = document.getElementById("setFirebaseUrl").value.trim();
+      const showHint = document.getElementById("setShowHint").checked;
+
+      const nameInputs = Array.from(document.querySelectorAll(".admin-member-name"));
+      const codeInputs = Array.from(document.querySelectorAll(".admin-member-code"));
+
+      const updatedMembers = [];
+      const usedCodes = new Set([newAdminCode.toLowerCase()]);
+
+      for (let i = 0; i < 11; i++) {
+        const id = Number(nameInputs[i].dataset.id);
+        const name = nameInputs[i].value.trim() || `Anggota ${id}`;
+        const code = codeInputs[i].value.trim();
+        if (!code || usedCodes.has(code.toLowerCase())) {
+          showToast(`Kode akses "${code}" duplikat atau kosong! Setiap anggota wajib punya kode unik.`);
+          return;
+        }
+        usedCodes.add(code.toLowerCase());
+        updatedMembers.push({ id, name, code });
+      }
+
+      const qrisFile = document.getElementById("setQrisFile").files[0];
+      if (qrisFile) {
+        appState.settings.qrisImage = await compressImageFile(qrisFile, 600, 0.8);
+        document.getElementById("setQrisFile").value = "";
+      }
+
+      appState.settings.adminCode = newAdminCode;
+      appState.settings.adminWa = newWa;
+      appState.settings.targetTotal = newTarget;
+      appState.settings.firebaseUrl = newFbUrl;
+      appState.settings.showHint = showHint;
+      appState.members = updatedMembers;
+
+      await saveState(false);
+      closeModal("adminModal");
+      showToast("Pengaturan Admin berhasil disimpan!");
+    });
+
+    function copyLoginInfoForWa() {
+      const siteUrl = window.location.href.split("#")[0];
+      let text = `*INFO LOGIN TABUNGAN CYBERVAULT 11*\nLink Website: ${siteUrl}\n\nKode Akses Pribadi Masing-Masing:\n`;
+      appState.members.forEach((m, idx) => {
+        text += `${idx + 1}. ${m.name} : *${m.code}*\n`;
+      });
+      text += `\n_Gunakan kode pribadi Anda untuk mencatat setoran & mengunggah bukti transfer._`;
+      navigator.clipboard.writeText(text).then(() => {
+        showToast("Daftar link & 11 kode pribadi disalin ke clipboard!");
+      });
+    }
+
+    function backupJson() {
+      const blob = new Blob([JSON.stringify(appState, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `backup-cybervault11-${new Date().toISOString().split("T")[0]}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function restoreJson(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = async (e) => {
+        try {
+          const parsed = JSON.parse(e.target.result);
+          if (!parsed.members || parsed.members.length !== 11) throw new Error("Format tidak valid");
+          appState = parsed;
+          await saveState(false);
+          closeModal("adminModal");
+          showToast("Data berhasil dipulihkan dari file backup!");
+        } catch (err) {
+          showToast("File backup JSON tidak valid.");
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    async function resetAllData() {
+      if (!confirm("Yakin ingin mereset seluruh saldo, transaksi, dan nama ke pengaturan awal?")) return;
+      appState = createDefaultState();
+      await saveState(false);
+      closeModal("adminModal");
+      showToast("Seluruh data telah direset.");
+    }
+
+    function exportCsv() {
+      const rows = [["ID", "Tanggal", "Anggota", "Nominal", "Status", "Catatan"]];
+      appState.transactions.forEach(tx => {
+        const m = appState.members.find(x => x.id === tx.memberId);
+        rows.push([
+          tx.id,
+          tx.date,
+          `"${(m ? m.name : "Anggota").replace(/"/g, '""')}"`,
+          tx.amount,
+          tx.status,
+          `"${(tx.note || "").replace(/"/g, '""')}"`
+        ]);
+      });
+      const csv = rows.map(r => r.join(",")).join("\n");
+      const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `laporan-tabungan-11-anggota-${new Date().toISOString().split("T")[0]}.csv`;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    // ==================== RENDERING ====================
+    function populateMemberSelect(selectEl, preferredId = null) {
+      selectEl.innerHTML = appState.members.map(m => `<option value="${m.id}">${escapeHtml(m.name)}</option>`).join("");
+      if (currentSession && currentSession.role === "member") {
+        selectEl.value = String(currentSession.memberId);
+        selectEl.disabled = true;
+      } else {
+        selectEl.disabled = false;
+        if (preferredId) selectEl.value = String(preferredId);
+      }
+    }
+
+    function renderAll() {
+      if (!currentSession) return;
+      const isAdmin = currentSession.role === "admin";
+
+      // Topbar Role Label & Admin Button
+      const userLabel = document.getElementById("currentUserLabel");
+      const adminBtn = document.getElementById("adminSettingsBtn");
+      if (isAdmin) {
+        userLabel.innerHTML = `Login sebagai: <strong style="color:var(--magenta);">MODE ADMIN UTAMA</strong> (Akses Penuh)`;
+        adminBtn.classList.remove("hidden");
+      } else {
+        const me = appState.members.find(m => m.id === currentSession.memberId);
+        userLabel.innerHTML = `Login sebagai: <strong style="color:var(--cyan);">${escapeHtml(me ? me.name : "Anggota")}</strong> (Kode Pribadi Terkunci)`;
+        adminBtn.classList.add("hidden");
+      }
+
+      // Admin Pending Queue
+      const verifyPanel = document.getElementById("adminVerifyPanel");
+      const pendingTxs = appState.transactions.filter(t => t.status === "pending");
+      if (isAdmin) {
+        verifyPanel.classList.remove("hidden");
+        document.getElementById("pendingCountBadge").textContent = `${pendingTxs.length} MENUNGGU`;
+        const pendingWrap = document.getElementById("pendingListContainer");
+        if (pendingTxs.length === 0) {
+          pendingWrap.innerHTML = `<div style="font-size:13px; color:var(--text-muted); padding:8px 0;">Tidak ada antrean setoran yang menunggu verifikasi.</div>`;
+        } else {
+          pendingWrap.innerHTML = pendingTxs.map(tx => {
+            const m = appState.members.find(x => x.id === tx.memberId);
+            return `
+              <div style="background:rgba(5,10,22,0.9); border:1px solid rgba(255,0,127,0.35); border-radius:8px; padding:12px; display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:10px;">
+                <div>
+                  <div style="font-weight:700; color:var(--text-main);">${escapeHtml(m ? m.name : "Anggota")} &mdash; <span class="font-mono" style="color:var(--yellow);">${formatRupiah(tx.amount)}</span></div>
+                  <div style="font-size:12px; color:var(--text-muted);">${tx.date} &bull; ${escapeHtml(tx.note)}</div>
+                </div>
+                <div style="display:flex; gap:7px; flex-wrap:wrap;">
+                  ${tx.proof ? `<button type="button" class="btn btn-cyan btn-sm" onclick="viewFullProof('${tx.id}')">Cek Bukti</button>` : ""}
+                  <button type="button" class="btn btn-green btn-sm" onclick="approveTx('${tx.id}')">Setujui</button>
+                  <button type="button" class="btn btn-red btn-sm" onclick="rejectTx('${tx.id}')">Tolak</button>
+                </div>
+              </div>
+            `;
+          }).join("");
+        }
+      } else {
+        verifyPanel.classList.add("hidden");
+      }
+
+      // Calculations
+      const approvedTxs = appState.transactions.filter(t => t.status === "approved");
+      const totalApproved = approvedTxs.reduce((sum, t) => sum + Number(t.amount), 0);
+      const totalPending = pendingTxs.reduce((sum, t) => sum + Number(t.amount), 0);
+      const targetTotal = Number(appState.settings.targetTotal) || 11000000;
+      const targetPerPerson = Math.round(targetTotal / 11);
+      const pct = Math.min(100, Math.round((totalApproved / targetTotal) * 100));
+      const remaining = Math.max(0, targetTotal - totalApproved);
+
+      document.getElementById("totalApprovedDisplay").textContent = formatRupiah(totalApproved);
+      document.getElementById("targetTotalDisplay").textContent = formatRupiah(targetTotal);
+      document.getElementById("targetPerPersonDisplay").textContent = formatRupiah(targetPerPerson);
+      document.getElementById("groupProgressBar").style.width = `${pct}%`;
+      document.getElementById("progressPercentText").textContent = `${pct}% Tercapai`;
+      document.getElementById("remainingTargetText").textContent = remaining === 0 ? "Target Kelompok Tercapai!" : `Kurang ${formatRupiah(remaining)}`;
+
+      document.getElementById("statVerified").textContent = formatRupiah(totalApproved);
+      document.getElementById("statPending").textContent = formatRupiah(totalPending);
+      document.getElementById("statAverage").textContent = formatRupiah(Math.round(totalApproved / 11));
+      document.getElementById("statTxCount").textContent = `${approvedTxs.length} Setoran`;
+
+      // Member Balances Map
+      const memberBalances = {};
+      const memberPendingCounts = {};
+      appState.members.forEach(m => { memberBalances[m.id] = 0; memberPendingCounts[m.id] = 0; });
+      approvedTxs.forEach(t => { if (memberBalances[t.memberId] !== undefined) memberBalances[t.memberId] += Number(t.amount); });
+      pendingTxs.forEach(t => { if (memberPendingCounts[t.memberId] !== undefined) memberPendingCounts[t.memberId] += 1; });
+
+      // Render 11 Member Cards
+      const grid = document.getElementById("membersGrid");
+      grid.innerHTML = appState.members.map(m => {
+        const bal = memberBalances[m.id] || 0;
+        const mPct = Math.min(100, Math.round((bal / targetPerPerson) * 100));
+        const isMe = !isAdmin && currentSession.memberId === m.id;
+        const canDeposit = isAdmin || isMe;
+
+        return `
+          <div class="cyber-panel member-card ${isMe ? "is-me" : ""}">
+            <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:6px; margin-bottom:8px;">
+              <div>
+                <div style="font-size:11px; color:var(--text-muted); font-family:'JetBrains Mono',monospace;">SLOT #${String(m.id).padStart(2, "0")}</div>
+                <div style="font-weight:700; font-size:16px; color:var(--text-main);">${escapeHtml(m.name)}</div>
+              </div>
+              ${isMe ? `<span class="badge badge-cyan">AKUN ANDA</span>` : (!isAdmin ? `<span class="badge" style="background:rgba(255,255,255,0.05); color:var(--text-muted);">TERKUNCI</span>` : `<span class="badge badge-magenta">${escapeHtml(m.code)}</span>`)}
+            </div>
+
+            <div class="font-orbitron" style="font-size:18px; color:var(--green); margin-bottom:6px;">${formatRupiah(bal)}</div>
+            <div class="progress-track" style="height:6px; margin-bottom:6px;">
+              <div class="progress-fill" style="width:${mPct}%;"></div>
+            </div>
+            <div style="display:flex; justify-content:space-between; font-size:11px; color:var(--text-muted); margin-bottom:12px;">
+              <span>${mPct}% dari ${formatRupiah(targetPerPerson)}</span>
+              ${memberPendingCounts[m.id] > 0 ? `<span style="color:var(--yellow);">${memberPendingCounts[m.id]} pending</span>` : ""}
+            </div>
+
+            <div style="display:flex; gap:6px; flex-wrap:wrap;">
+              ${canDeposit ? `
+                <button type="button" class="btn btn-cyan btn-sm" style="flex:1;" onclick="quickFocusDeposit(${m.id})">+ Setor</button>
+                <button type="button" class="btn btn-magenta btn-sm" onclick="openQrisModal(${m.id})">QRIS</button>
+              ` : `
+                <button type="button" class="btn btn-ghost btn-sm" style="flex:1;" disabled>Terkunci</button>
+              `}
+              <button type="button" class="btn btn-ghost btn-sm" onclick="openMemberHistory(${m.id})">Riwayat</button>
+            </div>
+          </div>
+        `;
+      }).join("");
+
+      // Populate Deposit Select
+      populateMemberSelect(document.getElementById("depositMemberSelect"));
+
+      // Render Bar Chart
+      const maxBal = Math.max(targetPerPerson, ...Object.values(memberBalances), 1);
+      document.getElementById("chartContainer").innerHTML = appState.members.map(m => {
+        const bal = memberBalances[m.id] || 0;
+        const w = Math.min(100, Math.round((bal / maxBal) * 100));
+        return `
+          <div class="chart-row">
+            <div class="chart-meta">
+              <span>${escapeHtml(m.name)}</span>
+              <span class="font-mono" style="color:var(--cyan);">${formatRupiah(bal)}</span>
+            </div>
+            <div class="chart-bar-bg">
+              <div class="chart-bar-val" style="width:${w}%;"></div>
+            </div>
+          </div>
+        `;
+      }).join("");
+
+      // Render Transactions Table
+      const statusFilter = document.getElementById("filterStatusSelect").value;
+      const filteredTxs = appState.transactions.filter(t => statusFilter === "all" || t.status === statusFilter);
+      const tbody = document.getElementById("txTableBody");
+
+      if (filteredTxs.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:var(--text-muted); padding:18px;">Belum ada data transaksi.</td></tr>`;
+      } else {
+        tbody.innerHTML = filteredTxs.map(tx => {
+          const m = appState.members.find(x => x.id === tx.memberId);
+          return `
+            <tr>
+              <td class="font-mono">${tx.date}</td>
+              <td><strong>${escapeHtml(m ? m.name : "Anggota")}</strong></td>
+              <td class="font-mono" style="color:var(--green);">${formatRupiah(tx.amount)}</td>
+              <td>${renderStatusBadge(tx.status)}</td>
+              <td>${tx.proof ? `<button type="button" class="btn btn-cyan btn-sm" onclick="viewFullProof('${tx.id}')">Lihat Foto</button>` : "-"}</td>
+              <td style="color:var(--text-muted);">${escapeHtml(tx.note)}${tx.status === "rejected" && tx.rejectReason ? ` <span style="color:#ff6b84;">(${escapeHtml(tx.rejectReason)})</span>` : ""}</td>
+            </tr>
+          `;
+        }).join("");
+      }
+    }
+
+    function refreshUI() {
+      if (currentSession) renderAll();
+      else refreshLoginScreen();
+    }
+
+    function quickFocusDeposit(memberId) {
+      const sel = document.getElementById("depositMemberSelect");
+      if (!sel.disabled) sel.value = String(memberId);
+      document.getElementById("depositFormCard").scrollIntoView({ behavior: "smooth" });
+      document.getElementById("depositAmountInput").focus();
+    }
+
+    function renderStatusBadge(status) {
+      if (status === "approved") return `<span class="badge badge-green">Disetujui</span>`;
+      if (status === "rejected") return `<span class="badge badge-red">Ditolak</span>`;
+      return `<span class="badge badge-yellow">Pending</span>`;
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.add("hidden");
+    }
+
+    function formatRupiah(num) {
+      return "Rp " + Number(num || 0).toLocaleString("id-ID");
+    }
+
+    function escapeHtml(str) {
+      return String(str || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    function showToast(msg) {
+      const existing = document.querySelector(".toast");
+      if (existing) existing.remove();
+      const div = document.createElement("div");
+      div.className = "toast";
+      div.textContent = msg;
+      document.body.appendChild(div);
+      setTimeout(() => div.remove(), 3500);
+    }
+
+    // Boot
+    (async function init() {
+      refreshLoginScreen();
+      if (getActiveFirebaseUrl()) await pullFromCloud(true);
+      if (currentSession) enterDashboard();
+    })();
+  </script>
+</body>
+</html>
